@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="614.918" height="329.434" viewBox="0 0 614.918 329.434">
+  <defs>
+    <filter id="mhcda_logo" x="0" y="0" width="614.918" height="329.434" filterUnits="userSpaceOnUse">
+      <feOffset dx="10" dy="10" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#mhcda_logo)">
+    <path id="mhcda_logo-2" data-name="mhcda_logo" d="M750.747,229.8l-.012-.012-6.9-6.9L648.639,127.7l-95.1,95.084-.037.049-.025.025-95.206-95.206-95.182,95.182-3.194,3.206-.722.71-2.986,2.986-.024.025L261.01,324.92,363.118,427.04l95.157-95.157,95.182,95.182L648.626,331.9h.012v.012l95.194,95.182,102.1-102.1Z" transform="translate(-256.01 -122.65)" fill="#ab84c4"/>
+  </g>
+</svg>

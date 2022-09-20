@@ -1,0 +1,30 @@
+// create and join group
+
+const join_btn = document.getElementsByClassName('join_btn')[0]
+const create_btn = document.getElementsByClassName('create_btn')[0]
+
+const create_group_form = document.getElementsByClassName('create')[0]
+const join_group_form = document.getElementsByClassName('join')[0]
+
+join_btn.onmouseover= () =>{
+    join_group_form.style.display = 'flex'
+    create_group_form.style.display = 'none'
+    // join_btn.classList.add('active_btn')
+}
+
+join_group_form.onmouseleave= ()=>{
+    join_group_form.style.display = 'none'
+    join_btn.classList.remove('active_btn')
+}
+
+
+create_btn.onmouseover = () =>{
+    create_group_form.style.display = 'flex'
+    join_group_form.style.display = 'none'
+    // create_btn.classList.add('active_btn')
+}
+
+create_group_form.onmouseleave = () =>{
+    create_group_form.style.display = 'none'
+    create_btn.classList.remove('active_btn')
+}

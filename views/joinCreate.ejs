@@ -1,0 +1,32 @@
+<%- include('header_and_footer/header') -%>
+
+<div id="joinCreate_main">
+    <div id="choose">
+        <div id="join_group">
+            <button class="join_btn">JOIN GROUP</button>
+
+            <form action="/join" method="post" class="join_create_form join">
+
+                <input type="text" name="groupid" placeholder="@groupid" class="input" required>
+                <input type="password" name="password" placeholder="password" class="input" required>
+                <button type="submit" class="form_button">JOIN</button>
+            </form>
+        </div>
+        <div id="create_group">
+            
+            <button class="create_btn">CREATE GROUP</button>
+
+            <form action="/create" method="post" class="join_create_form create">
+                
+                <input type="text" name="grouptitle" placeholder="Group Title" class="input" required>
+                <input type="text" name="groupid" placeholder="Group ID" class="input" required>
+                <input type="password" name="passkey" placeholder="passkey" class="input" required>
+                <input type="password" name="passkey_re" placeholder="re-enter passkey" class="input" required>
+                <button type="submit" class="form_button">CREATE</button>
+            </form>
+        </div>
+        <img id="bg_img" src="assets/mhcda_logo.svg" alt="">
+    </div>
+</div>
+<script src="../events.js"></script>
+<%- include('header_and_footer/footer') -%>

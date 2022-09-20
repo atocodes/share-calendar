@@ -1,0 +1,410 @@
+:root{
+    // colors
+    --description-site: #5755D2;
+    --date-and-calander: #ECEAE8;
+    --week-days-color: #636162;
+    --current-date-color: #c9c8c8;
+    --selected-date: var(--description-site);
+    --white: #FBF6FB;
+    --light-red: #BC2261;
+    --dark-purple: #5148BA;
+    --title-and-selection: #AB84C4;
+
+    // gradients
+    --gradient1: -30deg,#5148BA,#AB84C4;
+
+    // fonts
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// global styles
+
+::-webkit-scrollbar{
+    width: 8px;
+    height: 8px;
+    border-radius: 5px;
+    background-color: var(--description-site);
+}
+
+::-webkit-scrollbar-thumb{
+    display: none;
+}
+
+input{
+    color: var(--white);
+}
+
+// ----------------------------------- CALANDER STYLES -----------------------------------
+
+// user stat and more description parts
+#description_and_users{
+    position: relative;
+
+    #img_div{
+        height: 50px;
+        width: 50px;
+        border-radius: 25px;
+        overflow: hidden;
+    
+        img{
+            width: 100%;
+        }
+    }
+
+    p{
+        margin: 0;
+        font-weight: 300;
+        color: var(--white);
+    }
+}
+
+#title{
+    font-size: 1.5rem;
+    font-weight: lighter;
+    color: var(--title-and-selection);
+}
+
+#crues_status{
+    width: 100%;
+    height: 80px;
+    background-color: var(--white);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+button{
+    border: unset;
+    background-color: var(--title-and-selection);
+    height: 30px;
+    width: 100px;
+    border-radius: 10px;
+    font-family: var(--font-family);
+    font-weight: bolder;
+    text-transform: capitalize;
+    color: var(--selected-date);
+    transition: 1s;
+}
+
+button:hover{
+    color: white;
+    background-color: var(--description-site);
+    border: 1px solid var(--white);
+   
+}
+
+// calander elements
+.selected{
+    background-color: var(--description-site);
+    color: var(--current-date-color);
+}
+
+.selected-month{
+    color: var(--description-site);
+}
+
+#topDiv{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 100%;
+
+    #dateAndMonth{
+        height: 100%;
+        h1,h3{
+            color: var(--current-date-color);
+            margin: 0;
+        }
+        h1{
+            font-size: 4rem;
+        }
+        h3{
+            font-weight: lighter;
+        }
+    }
+
+    #yearAndMonthDiv{
+        
+        h3{
+            color: var(--week-days-color);
+            text-align: right;
+            position: relative;
+            right: 10px;
+        }
+        #monthsDiv{
+            color: var(--current-date-color);
+            font-weight: bold;
+            
+            .mRow{
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+    }
+}
+
+#weekdays{
+    display: flex;
+    justify-content: space-around;
+    color: var(--week-days-color);
+    font-weight: bold;
+
+    #weekday{
+        height: 100%;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+#datesDiv{
+    height: 100%;
+    width: 100%;
+    
+    #dateRow{
+        display: flex;
+        justify-content: space-around;
+
+        #dateDiv{
+            width: 50px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 1s;
+        }
+
+
+        #dateDiv:hover{
+            background-color: var(--week-days-color);
+            color: var(--date-and-calander);
+        }
+    }
+
+}
+
+// ----------------------------------- CALANDER STYLES -----------------------------------
+
+// ----------------------------------- Login and SignUp STYLES -----------------------------------
+#login_main,#signUp_main{
+    width: 90vw;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    #login,#signUp{
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 100%;
+        width: 100%;
+    }
+
+    #signUp{
+        height: 85%;
+    }
+}
+
+#logo_div{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img{
+        width: 70%;
+    }
+}
+
+#form_div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100%;
+    justify-content: space-between;
+
+}
+
+#app_form{
+    height: unset;
+}
+
+.sign-up_form,.login_form{
+    width: 60%;
+}
+
+.sign-up_form{
+    justify-content: space-evenly;
+}
+
+.login_form{
+    
+}
+
+#input,.input{
+    height: 30px;
+    border: 1px solid var(--white);
+    background-color: unset;
+}
+
+#input::placeholder,.input::placeholder{
+    color: var(--dark-purple);
+    font-family: var(--font-family);
+}
+
+#form_button,.form_button{
+    background-color: var(--white);
+    border-radius: 0;
+    font-weight: lighter;
+    color: var(--dark-purple);
+    width: 100%;
+    transition: 1s;
+}
+
+#form_button:hover,.form_button:hover{
+    background-color: var(--dark-purple);
+    color: var(--white);
+}
+
+#signup_link,#login_link{
+    color: var(--dark-purple);
+    text-align: center;
+    a{
+        color: var(--white);
+        transition: 1s;
+    }
+
+    a:hover{
+        color: var(--title-and-selection);
+    }
+}
+
+// ----------------------------------- Login and SignUp STYLES -----------------------------------
+
+
+// ----------------------------------- Join Create Group -----------------------------------
+
+#joinCreate_main{
+    width: 100vw;
+    height: 100vh;
+
+    #choose{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        position: relative;
+
+        #join_group, #create_group{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            input,button{
+                margin-top: 5%;
+            }
+        }
+    }
+
+    .create, .join{
+        display: none;
+        transition: 1s;
+    }
+}
+
+#bg_img{
+    position: absolute;
+    width: 70%;
+    filter: blur(20px);
+    z-index: -1;
+    left: 15%;
+    top: 15%;
+    opacity: 54%;
+}
+.join_btn, .create_btn{
+    border: 1px solid var(--white);
+    background-color: unset;
+    border-radius: 0;
+    font-weight: lighter;
+    width: 50%;
+    height: 40px;
+    font-size: 1rem;
+    color: white;
+}
+
+.join_btn:hover, .create_btn:hover{
+    border: 1px solid var(--white);
+    background-color: unset;
+    color: white;
+
+}
+
+.join_create_form{
+    display: flex;
+    height: unset;
+}
+
+
+.active_btn{
+    background-color: var(--white);
+    color: var(--dark-purple);
+}
+body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(var(--gradient1));
+    font-family: var(--font-family);
+    cursor: default;
+
+    #main{
+        width: 60%;
+
+        #calander{
+            background-color: var(--test-div-color);
+            display: grid;
+            grid-template-columns: 30% 70%;
+            grid-template-rows: 100%;
+
+            #description_and_users,#date_and_calander{
+                padding: 10px 20px;
+
+            }
+
+            #description_and_users{
+                display: inline-block;
+                height: 100%;
+                background-color: var(--description-site);
+                overflow-y: auto;
+                overflow-x: hidden;
+    
+            }
+    
+            #date_and_calander{
+                display: grid;
+                height: 100%;
+                grid-template-rows: 30% 10% 60%;
+                grid-template-columns: 100%;
+                background-color: var(--date-and-calander);
+            }
+        }
+    }
+
+}

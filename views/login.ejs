@@ -1,0 +1,19 @@
+<%- include('header_and_footer/header') -%>
+
+<div id="login_main" class="login">
+    <div id="login">
+        <div id="logo_div">
+            <img src="assets/mhcda_logo.svg" alt="app logo">
+        </div>
+        <div id="form_div">
+            <form action="/login" class="login_form" method="post">
+                <input type="email" name="email" class="input" placeholder="email" required>
+                <input type="password" name="password" class="input" placeholder="*******" required>
+                <button type="submit" id="form_button">LOGIN</button>
+                <span id="signup_link">am new let me <a href="/signup"><u>signup</u></a></span>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('header_and_footer/footer') -%>
