@@ -9,7 +9,7 @@
 
                 <input type="text" name="groupid" placeholder="@groupid" class="input" required>
                 <input type="password" name="password" placeholder="password" class="input" required>
-                <button type="submit" class="form_button">JOIN</button>
+                <button type="submit" id="join_submittion_btn" class="form_button">JOIN</button>
             </form>
         </div>
         <div id="create_group">
@@ -19,10 +19,10 @@
             <form action="/create" method="post" class="join_create_form create">
                 
                 <input type="text" name="grouptitle" placeholder="Group Title" class="input" required>
-                <input type="text" name="groupid" placeholder="Group ID" class="input" required>
+                <input type="text" name="groupid" placeholder="Group ID" class="input" id="groupId" required>
                 <input type="password" name="passkey" placeholder="passkey" class="input" required>
                 <input type="password" name="passkey_re" placeholder="re-enter passkey" class="input" required>
-                <button type="submit" class="form_button">CREATE</button>
+                <button type="submit" id="group_creation_btn" class="form_button" onclick="matchPassword()">CREATE</button>
             </form>
         </div>
         <img id="bg_img" src="assets/mhcda_logo.svg" alt="">

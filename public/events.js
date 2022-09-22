@@ -28,3 +28,11 @@ create_group_form.onmouseleave = () =>{
     create_group_form.style.display = 'none'
     create_btn.classList.remove('active_btn')
 }
+
+// value regenerator
+const groupIdInput = document.getElementById('groupId')
+groupIdInput.onfocus = e =>{
+    if(groupIdInput.value == ''){
+        groupIdInput.value = '@'
+    }
+}

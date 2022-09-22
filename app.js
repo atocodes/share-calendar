@@ -4,6 +4,8 @@ const body_parser = require('body-parser')
 const ejs = require('ejs')
 const mongoose = require('mongoose')
 const encrypt = require('mongoose-encryption')
+const validateConfirmPassword = require('./validator')
+
 
 const app = express()
 
@@ -20,9 +22,18 @@ const userSchema = new mongoose.Schema({
     password:String
 })
 
+const groupSchema = new mongoose.Schema({
+    grouptitle:String,
+    groupid: String,
+    passkey: String,
+    memebers: []
+})
+
 userSchema.plugin(encrypt,{secret:process.env.SECRET,encryptedFields:['password']})
+groupSchema.plugin(encrypt,{secret:process.env.SECRET,encryptedFileds:['passkey']})
 
 const User = mongoose.model('users',userSchema)
+const Group = mongoose.model('groups',groupSchema)
 
 app.get('/',(req,res)=>{
     res.render('login')
@@ -81,5 +92,17 @@ app.post('/login',(req,res)=>{
 })
 
 // TODO: Start working on the Create and Join Group Routes
+
+app.post('/create',(req,res)=>{
+    console.log(req.body)
+    const grouptitle = req.body.grouptitle
+    const groupid = req.body.groupid
+    const passkey = req.body.passkey
+    const re_passkey = req.body.passkey_re
+    
+    validateConfirmPassword.matchWithConformPassword(passkey,re_passkey)
+    ?res.render('index')
+    :res.render('joinCreate')
+})
 
 app.listen(3000, ()=>console.log('server is up and running on port 3000'))
