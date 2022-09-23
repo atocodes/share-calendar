@@ -1,0 +1,18 @@
+<!-- email conformation -->
+<% if(emailDontExist) { %>
+
+    <input type="email" name="email" class="input" style="border-color: red;" placeholder="email dont exist maybe Sign Up" required>
+<% } else { %>
+
+    <input type="email" name="email" class="input" placeholder="email" required> 
+<% } %>
+
+<!-- password conformation -->
+
+<% if (incorrect_password) { %>
+
+    <input type="password" name="password" class="input" style="border-color: red;" placeholder="incorrect password" required>
+<% } else { %>
+
+    <input type="password" name="password" class="input" placeholder="*******" required>
+<% } %>

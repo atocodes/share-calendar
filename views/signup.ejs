@@ -10,23 +10,9 @@
             <form action="/signup" class="sign-up_form" method="post">
                 <input type="text" name="fullname" class="input" placeholder="full name" required>
                 
-                <% if (emailExist) { %>
+                <!-- * Signup authentication form directory at COMMON folder -->
 
-                    <input type="email" name="email" class="input"  style="border-color: red;" placeholder="email already exists maybe LOGIN?" required>
-                <% } else {%>
-
-                    <input type="email" name="email" class="input" placeholder="email" required>
-                <% } %>
-
-                <input type="password" name="password" class="input" placeholder="password" required>
-               
-                <% if(matchPassword) {%>
-                    
-                    <input type="password" name="re_password" class="input" style="border-color: red;" placeholder="password dont match" required>
-                <% }else{ %>
-                    
-                    <input type="password" name="re_password" class="input" placeholder="re-enter password" required>
-                <% } %> 
+                <%- include('common/signupAuthenticationForm') -%>
 
                 <div id="rememeberMe_div">
                     <label for="checkbox">Rememeber Me</label>

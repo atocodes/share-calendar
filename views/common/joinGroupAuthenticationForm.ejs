@@ -1,0 +1,13 @@
+<% if(noGroupId) { %>
+                    
+    <input type="text" name="groupid" style="border-color: red;" placeholder="GROUP DONT EXIST. MAYBE CREATE ONE?" class="input" required>
+<% } else {%>
+
+    <input type="text" name="groupid" placeholder="@groupid" class="input" required>
+<% } %>
+
+<% if (wrongPassKey) { %>
+    <input type="password" name="passkey" style="border-color: red;" placeholder="Wrong passkey" class="input" required>
+<% } else { %>
+    <input type="password" name="passkey" placeholder="group passkey" class="input" required>
+<% } %>

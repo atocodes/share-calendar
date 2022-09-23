@@ -34,6 +34,44 @@ input{
     color: var(--white);
 }
 
+// * back and logout buttons style
+#back{
+    width: unset;
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
+    
+    button{
+        background-color: var(--dark-purple);
+        border-radius: 0;
+        color: var(--white);
+        height: 50px;
+
+    }
+
+    button:hover{
+        background-color: var(--white);
+        color: var(--dark-purple);
+        border: unset;
+    }
+}
+
+#logout{
+    background-color: var(--light-red);
+    position: absolute;
+    height: 50px;
+    border-radius: 0;
+    bottom: 2vh;
+    left: 2vh;
+    color: var(--white);
+}
+
+#logout:hover{
+    background-color: var(--white);
+    border: unset;
+    color: var(--light-red);
+}
+
 // ----------------------------------- CALANDER STYLES -----------------------------------
 
 // user stat and more description parts

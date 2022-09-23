@@ -1,0 +1,17 @@
+<% if(groupIdUsed) { %>
+                
+    <input type="text" name="groupid" style="border-color: red;" placeholder="Sorry But the group id you specified is used" class="input" id="groupId" required>
+<% } else { %>
+
+    <input type="text" name="groupid" placeholder="Group ID" class="input" id="groupId" required>
+<% } %>
+
+<% if(notSamePassword) { %>
+
+    <input type="password" name="passkey" placeholder="passkey" class="input" required>
+    <input type="password" name="passkey_re" style="border-color: red;" placeholder="password is no same" class="input" required>
+<% }else{ %>
+    
+    <input type="password" name="passkey" placeholder="passkey" class="input" required>
+    <input type="password" name="passkey_re" placeholder="re-enter passkey" class="input" required>
+<% } %>

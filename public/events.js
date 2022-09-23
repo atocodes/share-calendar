@@ -13,8 +13,12 @@ join_btn.onmouseover= () =>{
 }
 
 join_group_form.onmouseleave= ()=>{
-    join_group_form.style.display = 'none'
-    join_btn.classList.remove('active_btn')
+
+    setTimeout(()=>{
+        
+        join_group_form.style.display = 'none'
+        join_btn.classList.remove('active_btn')
+    },1500)
 }
 
 
@@ -25,8 +29,12 @@ create_btn.onmouseover = () =>{
 }
 
 create_group_form.onmouseleave = () =>{
-    create_group_form.style.display = 'none'
-    create_btn.classList.remove('active_btn')
+
+    setTimeout(()=>{
+
+        create_group_form.style.display = 'none'
+        create_btn.classList.remove('active_btn')
+    },1500)
 }
 
 // value regenerator

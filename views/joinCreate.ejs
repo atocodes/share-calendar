@@ -6,8 +6,11 @@
             <button class="join_btn">JOIN GROUP</button>
 
             <form action="/join" method="post" class="join_create_form join">
-                <input type="text" name="groupid" placeholder="@groupid" class="input" required>
-                <input type="password" name="passkey" placeholder="group passkey" class="input" required>
+                <!-- !group login authentication from  -->
+                <%- include('common/joinGroupAuthenticationForm') -%>
+
+                
+
                 <button type="submit" id="join_submittion_btn" class="form_button">JOIN</button>
             </form>
         </div>
@@ -16,15 +19,17 @@
             <button class="create_btn">CREATE GROUP</button>
 
             <form action="/create" method="post" class="join_create_form create">
-                <input type="hidden" name="admin">
+
+                
                 <input type="text" name="grouptitle" placeholder="Group Title" class="input" required>
-                <input type="text" name="groupid" placeholder="Group ID" class="input" id="groupId" required>
-                <input type="password" name="passkey" placeholder="passkey" class="input" required>
-                <input type="password" name="passkey_re" placeholder="re-enter passkey" class="input" required>
+    
+                <!-- * create group form -->
+                <%- include('common/createGroupAuthenticationForm') -%>
+    
                 <button type="submit" id="group_creation_btn" class="form_button" onclick="matchPassword()">CREATE</button>
             </form>
         </div>
-        
+        <%- include('common/logout') -%>
         <img id="bg_img" src="assets/mhcda_logo.svg" alt="">
     </div>
 </div>

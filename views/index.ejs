@@ -1,5 +1,11 @@
 <%- include('header_and_footer/header') -%>
 
+<div id="back">
+    <form action="/" method="get">
+        <button type="submit">JOIN OR CREATE GROUP</button>
+    </form>
+</div>
+
 <div id="main">
     <div id="calander">
         <div id="description_and_users">
@@ -10,13 +16,13 @@
                 <p>በአምላክ ታደሠ</p>
             </div>
             <div id="Title">
-                <h1 id="title"><%= title %></h1>
+                <h1 id="title"><%= data.groupTitle %> || <%= data.groupId %> </h1>
             </div>
             <div id="description">
                 <p>this is a description part where it shows who setted in and who is left</p>
             </div>
             
-            <form action="/" id="app_form" method="post">
+            <form action="/busydays" id="app_form" method="post">
                 <input type="hidden" name="dates" id="grab" required>
                 <button type="submit" id="btn">SET</button>
             </form>
@@ -29,6 +35,8 @@
         </div>
     </div>
 </div>
+
+<%- include('common/logout') -%>
 <!-- Main Js File Which Runs the App -->
 <script src="../main.js"></script>
 
