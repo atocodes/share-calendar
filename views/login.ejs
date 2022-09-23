@@ -9,6 +9,10 @@
             <form action="/login" class="login_form" method="post">
                 <input type="email" name="email" class="input" placeholder="email" required>
                 <input type="password" name="password" class="input" placeholder="*******" required>
+                <div id="rememeberMe_div">
+                    <label for="checkbox">Rememeber Me</label>
+                    <input type="checkbox" name="rememerMe" checked id="checkbox">
+                </div>
                 <button type="submit" id="form_button">LOGIN</button>
                 <span id="signup_link">am new let me <a href="/signup"><u>signup</u></a></span>
             </form>

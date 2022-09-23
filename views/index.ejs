@@ -10,7 +10,7 @@
                 <p>በአምላክ ታደሠ</p>
             </div>
             <div id="Title">
-                <h1 id="title">Looking For Free Schedule</h1>
+                <h1 id="title"><%= title %></h1>
             </div>
             <div id="description">
                 <p>this is a description part where it shows who setted in and who is left</p>
@@ -22,6 +22,11 @@
             </form>
             <div id="crues_status">
                 <!-- here it goes the crues img and if finished or not -->
+                <% for( let memeber of memebers ){ %>
+                    <div id="div">
+                        <p><%= memeber %> </p>
+                    </div>
+                <% } %>
             </div>
         </div>
         <div id="date_and_calander">
