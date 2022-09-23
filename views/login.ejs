@@ -2,16 +2,33 @@
 
 <div id="login_main" class="login">
     <div id="login">
-        <div id="logo_div">
-            <img src="assets/mhcda_logo.svg" alt="app logo">
-        </div>
+        <!-- Hero Image -->
+        <%- include('common/heroDiv') -%>
+
         <div id="form_div">
             <form action="/login" class="login_form" method="post">
-                <input type="email" name="email" class="input" placeholder="email" required>
-                <input type="password" name="password" class="input" placeholder="*******" required>
+                <!-- email conformation -->
+                <% if(emailDontExist) { %>
+
+                    <input type="email" name="email" class="input" style="border-color: red;" placeholder="email dont exist maybe Sign Up" required>
+                <% } else { %>
+
+                    <input type="email" name="email" class="input" placeholder="email" required> 
+                <% } %>
+
+                <!-- password conformation -->
+                
+                <% if (incorrect_password) { %>
+
+                    <input type="password" name="password" class="input" style="border-color: red;" placeholder="incorrect password" required>
+                <% } else { %>
+
+                    <input type="password" name="password" class="input" placeholder="*******" required>
+                <% } %>
+
                 <div id="rememeberMe_div">
-                    <label for="checkbox">Rememeber Me</label>
-                    <input type="checkbox" name="rememerMe" checked id="checkbox">
+                    <label for="checkbox">Rememeber Me</label>    
+                    <input type="checkbox" name="rememeberMe" checked id="checkbox">
                 </div>
                 <button type="submit" id="form_button">LOGIN</button>
                 <span id="signup_link">am new let me <a href="/signup"><u>signup</u></a></span>

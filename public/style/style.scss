@@ -212,7 +212,12 @@ button:hover{
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+
+    h3{
+        color: var(--description-site);
+    }
 
     img{
         width: 70%;

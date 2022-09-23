@@ -179,7 +179,11 @@ button:hover {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+#logo_div h3 {
+  color: var(--description-site);
 }
 #logo_div img {
   width: 70%;
