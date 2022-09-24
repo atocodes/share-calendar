@@ -13,7 +13,7 @@
                 <div id="img_div">
                     <img src="User Profile.jpg" alt="">
                 </div>
-                <p>በአምላክ ታደሠ</p>
+                <p><%= data.groupTitle %></p>
             </div>
             <div id="Title">
                 <h1 id="title"><%= data.groupTitle %> || <%= data.groupId %> </h1>
@@ -27,6 +27,17 @@
                 <button type="submit" id="btn">SET</button>
             </form>
             <div id="crues_status">
+                <!-- <%= data.memebers %> -->
+                <% for(let memeber of data.memebers) { %>
+                    <div id="memeber">
+                        <div id="profile_img">
+                            <h3 id="memeber_firstName">
+                                <%=memeber.fullname[0]%>
+                            </h3>
+                        </div>
+                        <p id="profile_name"> <%= memeber.fullname %> </p>
+                    </div>
+                <% } %>
                 <!-- here it goes the crues img and if finished or not -->
             </div>
         </div>

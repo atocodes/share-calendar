@@ -27,6 +27,31 @@ input {
   color: var(--white);
 }
 
+#memeber {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: var(--title-and-selection);
+  text-align: center;
+}
+#memeber #profile_img {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#memeber #profile_img h3 {
+  margin: 0;
+  text-transform: uppercase;
+}
+#memeber #profile_name {
+  font-weight: 400;
+  color: var(--dark-purple);
+  margin: 0;
+}
+
 #back {
   width: unset;
   position: absolute;

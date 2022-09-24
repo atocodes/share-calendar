@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 
 const validate = require('./validator')
 const session = require('express-session')
+const { json } = require('body-parser')
 
 const app = express()
 let login_user
@@ -30,18 +31,24 @@ mongoose.connect(process.env.DB_SERVER_LINK,(err)=>{
     }
 })
 
+const groupJoiningFormat = {
+    groupId:String,
+    settedDays:Object
+}
+
 const userSchema = new mongoose.Schema({
     fullname:String,
     email:String,
     password:String,
-    admin:Boolean
+    // ! admin:Boolean
+    groupJoined:[]
 })
 
 const groupSchema = new mongoose.Schema({
     groupTitle : String,
     groupId : String,
     passkey : String,
-    admin : userSchema,
+    admin : String,
     memebers : []
 })
 
@@ -51,6 +58,15 @@ groupSchema.plugin(encrypt,{secret: process.env.SECRET, encryptedFields: ['passk
 const User = mongoose.model('users',userSchema)
 const Group = mongoose.model('groups',groupSchema)
 
+// Group.findOneAndUpdate({groupId:'@123'},{$set : {memebers : []}},(err,success)=>{
+//     if(!err){
+//         console.log(success)
+//     }
+// })
+
+// Group.findOne({groupId :'@mhcda'},(err,group)=>{
+//     console.log(group)
+// })
 
 app.get('/',(req,res)=>{
     // res.clearCookie('remember_me')
@@ -58,6 +74,7 @@ app.get('/',(req,res)=>{
     // console.log(req.cookies)
     // console.log(login_user)
     const cookie = req.cookies
+    // console.log(cookie)
     // * join group check for password and id error 
     const noGroupId = req.session.noGroupId
     const wrongPasskey = req.session.wrongPasskey
@@ -113,6 +130,7 @@ app.get('/signup',(req,res)=>{
 app.get('/logout',(req,res)=>{
     res.clearCookie('remember_me')
     res.clearCookie('loginId')
+    res.clearCookie('connect.sid')
     res.redirect('/')
 })
 // * login and signup route
@@ -189,7 +207,7 @@ app.post('/signup',(req,res)=>{
                             // req.session.emailExist = false
                             res.redirect('/')
                         }else{
-            
+                            
                             res.render('404')
                         }
                     })
@@ -208,6 +226,59 @@ app.post('/signup',(req,res)=>{
 
 // * create and join group
 
+// !the main app route
+app.get('/:groupID',(req,res)=>{
+   const groupId = req.params.groupID
+   const userId = req.cookies.loginId
+    Group.findOne({groupId : groupId },(err,group)=>{
+        if(!err){
+            if(group.admin === userId){
+                Group.findOne({groupId : groupId}, (err,group)=>{
+                    if(!err){
+                        
+                        res.render('index',{
+                            data : group
+                        })
+                    }
+                })
+            }else{
+                User.findById(userId,(err,user)=>{
+                    if(!err){
+                        Group.findOneAndUpdate({groupId : groupId},{$push : {memebers : user}},(err,group)=>{
+                            if(!err){
+                                groupJoiningFormat.groupId = group._id
+
+                                if(user.groupJoined.length <= 0){
+                                    User.findByIdAndUpdate(user._id,{$push : { groupJoined : groupJoiningFormat}},(err,success)=>{
+                                        if(!err){
+                                            console.log(success)
+                                            res.redirect(`/${group.groupId}`)
+                                        }
+                                    })
+                                }else{
+                                    User.findByIdAndUpdate(user._id,{$push : { 'groupJoined.groupId' : {$ne : group._id}}},(err,success)=>{
+                                        if(!err){
+                                            console.log(success)
+                                            res.redirect(`/${group.groupId}`)
+                                        }
+                                    })
+                                }
+                            }
+                        })
+
+                        
+                    }
+                })
+                // console.log(group,userId)
+                res.render('index',{
+                    data : group
+                })
+            }
+        }
+    })
+
+})
+
 app.post('/join',(req,res)=>{
 
     const groupId = req.body.groupid
@@ -220,28 +291,9 @@ app.post('/join',(req,res)=>{
 
                     req.session.noGroupId = false
                     req.session.wrongPasskey = false
-                    
-                    User.findById(req.cookies.loginId,(err,user)=>{
-                        if(!err){
-                            if(group.admin.email === user.email){
-                                res.render('index',{
-                                    data : group
-                                })
-                            }else{
 
-                                Group.findByIdAndUpdate(group._id,{$push : {memebers : user}},(err,success)=>{
-                                    if(!err){
-                                        res.render('index',{
-                                            data:group
-                                        })
-                                    }else{
-                                         res.render('404')
-                                    }
-                                })
-                            }
-                        }
-                    })
-                    console.log('login')
+                    res.redirect(`/${group.groupId}`)
+
                 }else{
                     req.session.noGroupId = false
                     req.session.wrongPasskey = true
@@ -264,42 +316,33 @@ app.post('/create',(req,res)=>{
     const groupid = req.body.groupid
     const passKey = req.body.passkey
     const passKey_re = req.body.passkey_re
+    const admin = req.cookies.loginId //* the logged in user id from the cookie 
     const matchPass = validate.matchPassword(passKey,passKey_re)
-
-    // console.log(req.body)
-
-    if(!login_user){
-        User.findById(req.cookies.loginId,(err,user)=>{
-            login_user = user
-        })
-    }
 
     const newGroup = new Group({
         groupTitle : grouptitle,
         groupId : groupid,
         passkey: passKey,
-        admin: login_user
+        admin: admin
     })
 
-    Group.findOne({groupId: groupid},(err,group)=>{
-        if(!err){
+        Group.findOne({groupId: groupid},(err,group)=>{
+            if(!err){
+                console.log(group)
+                if(!group){
+                    
+                    if(matchPass){
+                        
+                        newGroup.save((err,newGroup)=>{
 
-            if(!group){
+                            if(!err){
 
-                if(matchPass){
+                                res.redirect(`/${groupid}`)
+                            }else{
 
-                    newGroup.save((err,newGroup)=>{
-
-                        if(!err){
-
-                            res.render('index',{
-                                data: newGroup
-                            })
-                        }else{
-
-                            res.render('404')
-                        }
-                    })
+                                res.render('404')
+                            }
+                        })
                 }else{
                     req.session.notSamePassword = true
                     req.session.groupIdUsed = false
@@ -317,6 +360,10 @@ app.post('/create',(req,res)=>{
             res.render('404')
         }
     })
+})
+
+app.post('/busydays',(req,res)=>{
+    console.log(req.body)
 })
 
 // TODO:  working on the calander page user memeber.... on the ejs file
