@@ -219,10 +219,9 @@ months.forEach(month => {
             description_div.innerHTML = ''
             
         })
-        
+
         if(pushTo.dates.length > 0)send.push(pushTo)
         month.classList.add('selected-month')
-        
         
         let ind = monthsArr.indexOf(month.textContent)
         datesDiv(ind,mainDiv)
@@ -230,7 +229,7 @@ months.forEach(month => {
         
         description_div.innerHTML = ''
         send.forEach(date=>{
-            console.log(date)
+            // console.log(date)
             // console.log(send)
             // console.log(description_div)
             info_div = document.createElement('div')
@@ -261,15 +260,15 @@ months.forEach(month => {
 
             overview.append(monthName,selected_dates_div)
             description_div.append(overview)
-            console.log(info_div)
+            // console.log(info_div)
         })
     }
 })
 
 const button = document.getElementById('btn')
 button.onclick = ()=> {
-    console.log(send)
-    // send.push(pushTo)
+    // console.log(send)
+    send.push(pushTo)
     input.value = JSON.stringify(send)
     // console.log(input.value)
 }
@@ -291,8 +290,6 @@ function arrayToTextFormat (arr){
     }
     return result
 }
-
-
 
 const img_div = document.getElementById('img_div')
 const randomColor = `#${Math.floor(Math.random() * 1e7).toString(16)}`

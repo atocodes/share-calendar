@@ -33,7 +33,7 @@ mongoose.connect(process.env.DB_SERVER_LINK,(err)=>{
 
 const groupJoinedData = {
     groupId:String,
-    settedDays:Object
+    settedDays:[]
 }
 
 const userSchema = new mongoose.Schema({
@@ -108,7 +108,6 @@ app.get('/',(req,res)=>{
 app.get('/login',(req,res)=>{
     const incorrect_password = req.session.incorrectPassword
     const emailDontExist = req.session.emailDontExist
-    
     res.render('login',{
         incorrect_password: incorrect_password,
         emailDontExist: emailDontExist
@@ -149,15 +148,14 @@ app.get('/index/:groupid',(req,res)=>{
 })
 
 // * logout event
-
 app.get('/logout',(req,res)=>{
     res.clearCookie('remember_me')
     res.clearCookie('loginId')
     res.clearCookie('connect.sid')
     res.redirect('/')
 })
-// * login and signup route
 
+// * login and signup route
 app.post('/login',(req,res)=>{
     const email = req.body.email
     const password = req.body.password
@@ -181,7 +179,7 @@ app.post('/login',(req,res)=>{
                         noGroupId: false,
                         wrongPassKey: false,
                         notSamePassword: false, 
-                        groupIdUsed: false
+                        groupIdExist: false
                     })
                 }else{
 
@@ -247,6 +245,16 @@ app.post('/signup',(req,res)=>{
     
 })
 
+// * busy days
+app.post('/busydays',(req,res)=>{
+    const data = JSON.parse(req.body.dates)
+    const userId = req.cookies.loginId
+    const groupid = req.session.groupid
+    // console.log(data,userId,groupid)
+    groupJoinedData.groupId = groupid
+    groupJoinedData.settedDays = data
+})
+
 // * create and join group
 
 app.post('/join',(req,res)=>{
@@ -262,6 +270,13 @@ app.post('/join',(req,res)=>{
                     console.log('login success and correct password:',true)
 
                     if(group.admin === logedInUser){
+                        groupJoinedData.groupId = 'admin'
+                        
+                        User.findByIdAndUpdate(logedInUser,{$push : {groupJoined : groupJoinedData}},(err,success)=>{
+                            if(!err){
+                                console.log('user profile successfully updated:',true)
+                            }
+                        })
                         console.log('user is admin:',true)
                         res.redirect(`/index/${group.groupId}`)
                     }else{
@@ -269,6 +284,7 @@ app.post('/join',(req,res)=>{
 
                         // * group joined format
                         groupJoinedData.groupId = group._id
+                        
 
                         // * user dont join any groups?
                         User.findById(logedInUser,(err,user)=>{
@@ -318,7 +334,6 @@ app.post('/join',(req,res)=>{
         }
     })
 })
-
 
 app.post('/create',(req,res)=>{
     const grouptitle = req.body.grouptitle
