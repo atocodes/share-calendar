@@ -31,7 +31,7 @@ mongoose.connect(process.env.DB_SERVER_LINK,(err)=>{
     }
 })
 
-const groupJoiningFormat = {
+const groupJoinedData = {
     groupId:String,
     settedDays:Object
 }
@@ -81,8 +81,8 @@ app.get('/',(req,res)=>{
 
     // * create group check for password conformation and id existance 
     const createGroupNotSamePassword = req.session.notSamePassword
-    const createGroupIdUsed = req.session.groupIdUsed
-    console.log(wrongPasskey)
+    const creategroupIdExist = req.session.groupIdExist
+    // console.log(wrongPasskey)
 
     if(cookie.remember_me){
         const userID = cookie.loginId
@@ -94,7 +94,7 @@ app.get('/',(req,res)=>{
                     noGroupId : noGroupId,//* join group no group id named
                     wrongPassKey: wrongPasskey,//* join group incorrect password
                     notSamePassword: createGroupNotSamePassword, //*create group not the same password
-                    groupIdUsed: createGroupIdUsed//* create group group id exist
+                    groupIdExist: creategroupIdExist//* create group group id exist
                 })
             }else{
                 res.render('404')
@@ -122,6 +122,29 @@ app.get('/signup',(req,res)=>{
     res.render('signup',{
         emailExist: emailExist,
         matchPassword: matchPassword
+    })
+})
+
+// * index web
+app.get('/index/:groupid',(req,res)=>{
+    const groupid = req.params.groupid
+    let logedInUserFullName
+    Group.findOne({groupId : groupid},(err,group)=>{
+        if(!err && group){
+            User.findById(req.cookies.loginId,(err,user)=>{
+                if(!err){
+                    logedInUserFullName = user.fullname
+                    console.log('group found and login:',true)
+                    res.render('index',{
+                        data:group,
+                        logedInUserFullName : user.fullname.toUpperCase()
+                    })
+                }
+            })
+        }else{
+            console.log('group found and login:', false)
+            res.render('404')
+        }
     })
 })
 
@@ -226,147 +249,121 @@ app.post('/signup',(req,res)=>{
 
 // * create and join group
 
-// !the main app route
-app.get('/:groupID',(req,res)=>{
-   const groupId = req.params.groupID
-   const userId = req.cookies.loginId
-    Group.findOne({groupId : groupId },(err,group)=>{
-        if(!err){
-            if(group.admin === userId){
-                Group.findOne({groupId : groupId}, (err,group)=>{
-                    if(!err){
-                        
-                        res.render('index',{
-                            data : group
-                        })
-                    }
-                })
-            }else{
-                User.findById(userId,(err,user)=>{
-                    if(!err){
-                        Group.findOneAndUpdate({groupId : groupId},{$push : {memebers : user}},(err,group)=>{
-                            if(!err){
-                                groupJoiningFormat.groupId = group._id
-
-                                if(user.groupJoined.length <= 0){
-                                    User.findByIdAndUpdate(user._id,{$push : { groupJoined : groupJoiningFormat}},(err,success)=>{
-                                        if(!err){
-                                            console.log(success)
-                                            res.redirect(`/${group.groupId}`)
-                                        }
-                                    })
-                                }else{
-                                    User.findByIdAndUpdate(user._id,{$push : { 'groupJoined.groupId' : {$ne : group._id}}},(err,success)=>{
-                                        if(!err){
-                                            console.log(success)
-                                            res.redirect(`/${group.groupId}`)
-                                        }
-                                    })
-                                }
-                            }
-                        })
-
-                        
-                    }
-                })
-                // console.log(group,userId)
-                res.render('index',{
-                    data : group
-                })
-            }
-        }
-    })
-
-})
-
 app.post('/join',(req,res)=>{
-
     const groupId = req.body.groupid
-    const passKey = req.body.passkey
+    const passkey = req.body.passkey
+    const logedInUser = req.cookies.loginId
 
     Group.findOne({groupId : groupId},(err,group)=>{
         if(!err){
             if(group){
-                if(group.passkey == passKey){
+                if(group.passkey === passkey){
+                    // * 'logn success => check for admin'
+                    console.log('login success and correct password:',true)
 
-                    req.session.noGroupId = false
-                    req.session.wrongPasskey = false
+                    if(group.admin === logedInUser){
+                        console.log('user is admin:',true)
+                        res.redirect(`/index/${group.groupId}`)
+                    }else{
+                        console.log('user is admin:',false)
 
-                    res.redirect(`/${group.groupId}`)
+                        // * group joined format
+                        groupJoinedData.groupId = group._id
+
+                        // * user dont join any groups?
+                        User.findById(logedInUser,(err,user)=>{
+                            if(!err){
+                                if(user.groupJoined.length === 0){
+                                    console.log('user joined 0 groups:',false)
+
+                                    User.findByIdAndUpdate(user._id,{$push : {groupJoined : groupJoinedData}},(err,success)=>{
+                                        if(!err){
+                                            console.log('user profile successfully updated:',true)
+                                        }
+                                    })
+                                    // * if the user is first time joining the group so the user is new For the group too
+                                    Group.findOneAndUpdate({groupId : groupId},{$push : {memebers : user}},(err,success)=>{
+                                        if(!err){
+                                            console.log('group memebers successfully updated:',true)
+                                        }
+                                    })
+
+                                }else{
+                                    User.findByIdAndUpdate(
+                                        logedInUser,
+                                        {$push:{groupJoined : {$ne : groupJoinedData}}},
+                                        (err,success)=>{
+                                            if(!err){
+                                                console.log('user data successfuly updated:',true)
+                                            }
+                                        })
+                                    console.log('user joined groups:',true)
+                                }
+                            }
+                        })
+
+                        res.redirect(`/index/${group.groupId}`)
+                    }
 
                 }else{
-                    req.session.noGroupId = false
+                    console.log('wrong passkey:',true)
                     req.session.wrongPasskey = true
                     res.redirect('/')
-                    console.log('wrong password')
                 }
             }else{
+
                 req.session.noGroupId = true
-                req.session.wrongPasskey = false
                 res.redirect('/')
-                console.log('no group named like that')
             }
         }
     })
-
 })
+
 
 app.post('/create',(req,res)=>{
     const grouptitle = req.body.grouptitle
     const groupid = req.body.groupid
-    const passKey = req.body.passkey
-    const passKey_re = req.body.passkey_re
-    const admin = req.cookies.loginId //* the logged in user id from the cookie 
-    const matchPass = validate.matchPassword(passKey,passKey_re)
+    const passkey = req.body.passkey
+    const passkey_re = req.body.passkey_re
 
-    const newGroup = new Group({
-        groupTitle : grouptitle,
-        groupId : groupid,
-        passkey: passKey,
-        admin: admin
-    })
+    const passwordMatch = validate.matchPassword(passkey,passkey_re)
 
-        Group.findOne({groupId: groupid},(err,group)=>{
-            if(!err){
-                console.log(group)
-                if(!group){
-                    
-                    if(matchPass){
-                        
-                        newGroup.save((err,newGroup)=>{
-
-                            if(!err){
-
-                                res.redirect(`/${groupid}`)
-                            }else{
-
-                                res.render('404')
-                            }
-                        })
-                }else{
-                    req.session.notSamePassword = true
-                    req.session.groupIdUsed = false
-                    res.redirect('/')
-                    console.log('not same password')
-                }
-
-            }else{
-                req.session.notSamePassword = false
-                req.session.groupIdUsed = true
+    Group.findOne({groupId : groupid},(err,existingId)=>{
+        if(!err){
+            if(existingId){
+                // ! group id used block
+                console.log('Group ID Exists:',true)
+                req.session.groupIdExist = true
                 res.redirect('/')
-                console.log('group id used or exist')
+                
+            }else{
+                console.log('Group ID Exists:',false)
+
+                if(passwordMatch){
+                    console.log('Password Match:',true)
+
+                    const newGroup = new Group({
+                        groupId: groupid,
+                        groupTitle : grouptitle,
+                        passkey : passkey,
+                        admin : req.cookies.loginId
+                    })
+
+                    newGroup.save((err)=>{
+                        if(!err){
+                            console.log('group created:',true)
+                            res.redirect(`/index/${groupid}`)
+                        }
+                    })
+                }else{
+                    console.log('Password Match:',false)
+                    req.session.notSamePassword = true
+                    res.redirect('/')
+                }
             }
-        }else{
-            res.render('404')
         }
     })
+
+    // console.log(req.body)
 })
-
-app.post('/busydays',(req,res)=>{
-    console.log(req.body)
-})
-
-// TODO:  working on the calander page user memeber.... on the ejs file
-
-
 app.listen(3000,()=>console.log('server started at port 3000'))

@@ -13,9 +13,9 @@
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  border-radius: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
   background-color: var(--description-site);
 }
 
@@ -34,6 +34,7 @@ input {
   border-radius: 30px;
   background-color: var(--title-and-selection);
   text-align: center;
+  margin: 5px;
 }
 #memeber #profile_img {
   height: 100%;
@@ -47,8 +48,8 @@ input {
   text-transform: uppercase;
 }
 #memeber #profile_name {
-  font-weight: 400;
   color: var(--dark-purple);
+  font-size: 0.6rem;
   margin: 0;
 }
 
@@ -94,9 +95,12 @@ input {
   width: 50px;
   border-radius: 25px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-#description_and_users #img_div img {
-  width: 100%;
+#description_and_users #img_div h2 {
+  color: var(--white);
 }
 #description_and_users p {
   margin: 0;
@@ -117,6 +121,11 @@ input {
   position: absolute;
   left: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 button {

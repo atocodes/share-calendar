@@ -20,9 +20,9 @@
 // global styles
 
 ::-webkit-scrollbar{
-    width: 8px;
-    height: 8px;
-    border-radius: 5px;
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
     background-color: var(--description-site);
 }
 
@@ -41,6 +41,7 @@ input{
     border-radius: 30px;
     background-color: var(--title-and-selection);
     text-align: center;
+    margin: 5px;
 
     #profile_img{
         height: 100%;
@@ -56,8 +57,8 @@ input{
     }
 
     #profile_name{
-        font-weight: 400;
         color: var(--dark-purple);
+        font-size: .6rem;
         margin: 0;
     }
 }
@@ -111,9 +112,12 @@ input{
         width: 50px;
         border-radius: 25px;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     
-        img{
-            width: 100%;
+        h2{
+            color: var(--white);
         }
     }
 
@@ -137,6 +141,12 @@ input{
     position: absolute;
     left: 0;
     bottom: 0;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 button{

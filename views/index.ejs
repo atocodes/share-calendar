@@ -11,15 +11,15 @@
         <div id="description_and_users">
             <div id="img_and_name">
                 <div id="img_div">
-                    <img src="User Profile.jpg" alt="">
+                    <h2><%=logedInUserFullName[0]%></h2>
                 </div>
-                <p><%= data.groupTitle %></p>
+                <p> <b><u><%= logedInUserFullName %></u></b> <br> <%= data.groupId %></p>
             </div>
             <div id="Title">
-                <h1 id="title"><%= data.groupTitle %> || <%= data.groupId %> </h1>
+                <h1 id="title"><%= data.groupTitle %></h1>
             </div>
             <div id="description">
-                <p>this is a description part where it shows who setted in and who is left</p>
+                <p>Overview of selection dates</p>
             </div>
             
             <form action="/busydays" id="app_form" method="post">
@@ -27,15 +27,14 @@
                 <button type="submit" id="btn">SET</button>
             </form>
             <div id="crues_status">
-                <!-- <%= data.memebers %> -->
                 <% for(let memeber of data.memebers) { %>
                     <div id="memeber">
                         <div id="profile_img">
                             <h3 id="memeber_firstName">
-                                <%=memeber.fullname[0]%>
+                                <%= memeber.fullname[0] %>
                             </h3>
                         </div>
-                        <p id="profile_name"> <%= memeber.fullname %> </p>
+                        <p id="profile_name"> <%= memeber.fullname.toUpperCase().slice(0,5) %>... </p>
                     </div>
                 <% } %>
                 <!-- here it goes the crues img and if finished or not -->

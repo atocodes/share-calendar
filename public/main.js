@@ -230,3 +230,8 @@ button.onclick = ()=> {
     input.value = JSON.stringify(send)
     // console.log(input.value)
 }
+
+
+const img_div = document.getElementById('img_div')
+const randomColor = `#${Math.floor(Math.random() * 1e7).toString(16)}`
+img_div.style.backgroundColor = randomColor
