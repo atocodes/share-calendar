@@ -23,7 +23,7 @@
     width: 4px;
     height: 4px;
     border-radius: 4px;
-    background-color: var(--description-site);
+    background-color: var(--week-days-color);
 }
 
 ::-webkit-scrollbar-thumb{
@@ -104,6 +104,52 @@ input{
 // ----------------------------------- CALANDER STYLES -----------------------------------
 
 // user stat and more description parts
+
+#description{
+    height: 100px;
+    overflow-y: auto;
+
+    #overview{
+        width: 100%;
+        height: 40%;
+        display: grid;
+        grid-template-columns: 25% 75%;
+        grid-template-rows: 100%;
+
+        .overview_monthName{
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #overview_selecteddays_from_the_month{
+            overflow-x: auto;
+            display: grid;
+            grid-template-rows: 30px;
+            grid-column-gap: 5px;
+            
+            #month_date{
+                // display: inline-block
+                margin: 0 2px;
+                height: 30px;
+                width: 30px;
+
+                p{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: var(--dark-purple);
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+
+    }
+}
+
 #description_and_users{
     position: relative;
 
@@ -318,6 +364,8 @@ form{
 
 #app_form{
     height: unset;
+    position: relative;
+    top: 5%;
 }
 
 .sign-up_form,.login_form{

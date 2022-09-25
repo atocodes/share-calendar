@@ -211,15 +211,58 @@ const input = document.getElementById('grab')
 months.forEach(month => {
     month.onclick = () =>{
         // console.log(send)
+        const description_div = document.getElementById('description') //! prototype bugs can happen in UI/UX but dont affect the app functionality
+        let info_div
 
-        months.forEach(e => e.classList.remove('selected-month'))
+        months.forEach(e => {
+            e.classList.remove('selected-month')
+            description_div.innerHTML = ''
+            
+        })
         
         if(pushTo.dates.length > 0)send.push(pushTo)
         month.classList.add('selected-month')
         
+        
         let ind = monthsArr.indexOf(month.textContent)
         datesDiv(ind,mainDiv)
         input.value = JSON.stringify(send)
+        
+        description_div.innerHTML = ''
+        send.forEach(date=>{
+            console.log(date)
+            // console.log(send)
+            // console.log(description_div)
+            info_div = document.createElement('div')
+            info_div.id = 'overview_div'
+
+            const overview = document.createElement('div')
+            overview.id = 'overview'
+            const monthName = document.createElement('p')
+            monthName.className = 'overview_monthName'
+            monthName.id = date.month
+            monthName.textContent = date.month.toUpperCase()
+
+            const selected_dates_div = document.createElement('div')
+            selected_dates_div.id = 'overview_selecteddays_from_the_month'
+            selected_dates_div.style.gridTemplateColumns = `repeat(${date.dates.length},30px)`
+
+            let month_date
+            date.dates.forEach(date=>{
+                month_date = document.createElement('div')
+                month_date.id = 'month_date' 
+
+                const date_no = document.createElement('p')
+                date_no.textContent = date
+
+                month_date.append(date_no)
+                selected_dates_div.append(month_date)
+            })
+
+            overview.append(monthName,selected_dates_div)
+            description_div.append(overview)
+            console.log(info_div)
+        })
     }
 })
 
@@ -230,6 +273,25 @@ button.onclick = ()=> {
     input.value = JSON.stringify(send)
     // console.log(input.value)
 }
+
+// * to format dates selected by the user
+function arrayToTextFormat (arr){
+    let given = arr
+    let result
+    if(given.length > 1){
+        const newArr = []
+        given.forEach((item,index)=>{
+            if(index <= given.length-2){
+                newArr.push(item)
+            }
+        })
+        result = `${newArr.toString()} and ${given[given.length-1]}` 
+    }else{
+        return given.toString()
+    }
+    return result
+}
+
 
 
 const img_div = document.getElementById('img_div')
