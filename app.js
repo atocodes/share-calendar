@@ -288,11 +288,7 @@ app.post('/busydays',(req,res)=>{
                 }
             }
 
-            User.findById(userid,(err,user)=>{
-                if(!err){
-                    console.log(user)
-                }
-            })
+            
         }
     })
     // TODO: you better fix the repetation problem when ever the user updates the data!
