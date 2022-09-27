@@ -49,7 +49,8 @@ const groupSchema = new mongoose.Schema({
     groupId : String,
     passkey : String,
     admin : String,
-    memebers : []
+    memebers : [],
+    usersAndDaySettings:[]
 })
 
 userSchema.plugin(encrypt,{secret : process.env.SECRET, encryptedFields : ['password']})
@@ -58,7 +59,7 @@ groupSchema.plugin(encrypt,{secret: process.env.SECRET, encryptedFields: ['passk
 const User = mongoose.model('users',userSchema)
 const Group = mongoose.model('groups',groupSchema)
 
-// Group.findOneAndUpdate({groupId:'@123'},{$set : {memebers : []}},(err,success)=>{
+// Group.findOneAndUpdate({groupId:'@mhcda'},{$set : {usersAndDaySettings : []}},(err,success)=>{
 //     if(!err){
 //         console.log(success)
 //     }
@@ -67,6 +68,7 @@ const Group = mongoose.model('groups',groupSchema)
 // Group.findOne({groupId :'@mhcda'},(err,group)=>{
 //     console.log(group)
 // })
+
 
 app.get('/',(req,res)=>{
     // res.clearCookie('remember_me')
@@ -130,13 +132,15 @@ app.get('/index/:groupid',(req,res)=>{
     let logedInUserFullName
     Group.findOne({groupId : groupid},(err,group)=>{
         if(!err && group){
+
+            req.session.groupid = group._id
             User.findById(req.cookies.loginId,(err,user)=>{
                 if(!err){
                     logedInUserFullName = user.fullname
                     console.log('group found and login:',true)
                     res.render('index',{
                         data:group,
-                        logedInUserFullName : user.fullname.toUpperCase()
+                        logedInUserFullName : user.fullname.toUpperCase(),
                     })
                 }
             })
@@ -248,11 +252,50 @@ app.post('/signup',(req,res)=>{
 // * busy days
 app.post('/busydays',(req,res)=>{
     const data = JSON.parse(req.body.dates)
-    const userId = req.cookies.loginId
+    const userid = req.cookies.loginId
     const groupid = req.session.groupid
-    // console.log(data,userId,groupid)
-    groupJoinedData.groupId = groupid
-    groupJoinedData.settedDays = data
+    // console.log(data,userid,groupid)
+    console.log(groupid)
+    console.log(userid)
+    const set = {
+        userid : userid,
+        days : data,
+        set : false
+    }
+
+    Group.findById(groupid,(err,group)=>{
+        if(!err){
+            const userSetting = group.usersAndDaySettings
+            if(userSetting.length === 0){
+                Group.findByIdAndUpdate(groupid,{$push : {usersAndDaySettings : set}},(err,success)=>{
+                    if(!err){
+                        console.log('first user day setting updated to the group data successfully',true)
+                    }
+                })
+            }else{
+                const users = userSetting.filter(user=>{
+                    return user.userid === userid
+                })
+                if(users.length === 1){
+                    console.log('user already set a date',true)
+                }else{
+                    set.set = true
+                    Group.findByIdAndUpdate(groupid,{$push : {usersAndDaySettings : set}},(err,success)=>{
+                        if(!err){
+                            console.log('other memeber day setting updated to the group data successfully',true)
+                        }
+                    })
+                }
+            }
+
+            User.findById(userid,(err,user)=>{
+                if(!err){
+                    console.log(user)
+                }
+            })
+        }
+    })
+    // TODO: you better fix the repetation problem when ever the user updates the data!
 })
 
 // * create and join group
@@ -266,13 +309,14 @@ app.post('/join',(req,res)=>{
         if(!err){
             if(group){
                 if(group.passkey === passkey){
+
                     // * 'logn success => check for admin'
                     console.log('login success and correct password:',true)
 
                     if(group.admin === logedInUser){
                         groupJoinedData.groupId = 'admin'
                         
-                        User.findByIdAndUpdate(logedInUser,{$push : {groupJoined : groupJoinedData}},(err,success)=>{
+                        User.findByIdAndUpdate(logedInUser,{$push : {groupJoined : group._id}},(err,success)=>{
                             if(!err){
                                 console.log('user profile successfully updated:',true)
                             }
@@ -292,7 +336,7 @@ app.post('/join',(req,res)=>{
                                 if(user.groupJoined.length === 0){
                                     console.log('user joined 0 groups:',false)
 
-                                    User.findByIdAndUpdate(user._id,{$push : {groupJoined : groupJoinedData}},(err,success)=>{
+                                    User.findByIdAndUpdate(user._id,{$push : {groupJoined : group._id}},(err,success)=>{
                                         if(!err){
                                             console.log('user profile successfully updated:',true)
                                         }
@@ -307,7 +351,7 @@ app.post('/join',(req,res)=>{
                                 }else{
                                     User.findByIdAndUpdate(
                                         logedInUser,
-                                        {$push:{groupJoined : {$ne : groupJoinedData}}},
+                                        {$push:{groupJoined : {$ne : group._id}}},
                                         (err,success)=>{
                                             if(!err){
                                                 console.log('user data successfuly updated:',true)
@@ -357,19 +401,27 @@ app.post('/create',(req,res)=>{
                 if(passwordMatch){
                     console.log('Password Match:',true)
 
-                    const newGroup = new Group({
-                        groupId: groupid,
-                        groupTitle : grouptitle,
-                        passkey : passkey,
-                        admin : req.cookies.loginId
-                    })
-
-                    newGroup.save((err)=>{
+                    
+                    User.findById(req.cookies.loginId,(err,user)=>{
                         if(!err){
-                            console.log('group created:',true)
-                            res.redirect(`/index/${groupid}`)
+                            const newGroup = new Group({
+                                groupId: groupid,
+                                groupTitle : grouptitle,
+                                passkey : passkey,
+                                admin : req.cookies.loginId,
+                                memebers: [user]
+                            })
+                            
+                            newGroup.save((err,group)=>{
+                                if(!err){
+                                    console.log(group)
+                                    console.log('group created:',true)
+                                    res.redirect(`/index/${groupid}`)
+                                }
+                            })
                         }
                     })
+
                 }else{
                     console.log('Password Match:',false)
                     req.session.notSamePassword = true
