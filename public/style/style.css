@@ -17,6 +17,11 @@
   font-weight: bold;
 }
 
+#u_err {
+  color: var(--description-site);
+  font-weight: bold;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -487,6 +492,9 @@ body {
   font-family: var(--font-family);
   cursor: default;
 }
+body #screen_cover {
+  display: none;
+}
 body #main {
   width: 60%;
 }
@@ -515,7 +523,23 @@ body #main #calander #date_and_calander {
 }
 
 @media only screen and (max-width: 767px) {
-  body {
-    background-image: var(--description-site);
+  body #screen_cover {
+    display: flex;
+    position: absolute;
+    z-index: 1;
+    height: 100vh;
+    width: 100vw;
+    background-image: linear-gradient(var(--gradient1));
+    align-items: center;
+    justify-content: center;
+  }
+  body #screen_cover h1 {
+    font-size: 1rem;
+    color: var(--date-and-calander);
+    text-align: center;
+  }
+  body #screen_cover img {
+    position: absolute;
+    z-index: -1;
   }
 }/*# sourceMappingURL=style.css.map */

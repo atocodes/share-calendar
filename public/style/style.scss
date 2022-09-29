@@ -24,6 +24,11 @@
     font-weight: bold;
 }
 
+#u_err{
+    color: var(--description-site);
+    font-weight: bold;
+}
+
 ::-webkit-scrollbar{
     width: 4px;
     height: 4px;
@@ -546,6 +551,9 @@ body{
     background-image: linear-gradient(var(--gradient1));
     font-family: var(--font-family);
     cursor: default;
+    #screen_cover{
+        display: none;
+    }
 
     #main{
         width: 60%;
@@ -584,6 +592,26 @@ body{
 
 @media only screen and(max-width: 767px){
     body{
-        background-image: var(--description-site);
+        #screen_cover{
+            display: flex;
+            position: absolute;
+            z-index: 1;
+            height: 100vh;
+            width: 100vw;
+            background-image: linear-gradient(var(--gradient1));
+            align-items: center;
+            justify-content: center;
+            
+            h1{
+                font-size: 1rem;
+                color: var(--date-and-calander);
+                text-align: center;
+            }
+            
+            img{
+                position: absolute;
+                z-index: -1;
+            }
+        }
     }
 }
