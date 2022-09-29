@@ -2,52 +2,6 @@ const validateConfirmPassword = (passkey,passkey_re)=> passkey === passkey_re
 
 exports.matchPassword = validateConfirmPassword
 
-// const given = [
-//     {
-//       userid: '63334abef4e42ec90e976384',
-//       days: [
-//         { month: 'Sep', dates: [ '1', '9', '16', '30', '14', '5' ] },
-//         {
-//           month: 'Jul',
-//           dates: [
-//             '5',  '13', '19',
-//             '25', '8',  '15',
-//             '22'
-//           ]
-//         },
-//         { month: 'Nov', dates: [ '4', '11', '18', '24', '8' ] 
-// },
-//         {
-//           month: 'Jun',
-//           dates: [
-//             '3',  '11', '17',
-//             '23', '29', '21',
-//             '13', '5',  '1'
-//           ]
-//         },
-//         { month: 'Mar', dates: [ '2', '9', '16' ] }
-//       ]
-//     },
-//     {
-//       userid: '63340e4ff4e42ec90e97639b',
-//       days: [
-//         {
-//           month: 'Sep',
-//           dates: [
-//             '4',  '12', '13',
-//             '14', '22', '30',
-//             '1'
-//           ]
-//         },
-//         { month: 'Feb', dates: [ '2', '9', '17', '18', '26' ] 
-// },
-//         { month: 'May', dates: [ '6', '13', '12', '19', '25' ] },
-//         { month: 'Aug', dates: [ '3', '10', '17', '24', '25' ] },
-//         { month: 'Apr', dates: [ '6', '14', '22', '29' ] }    
-//       ]
-//     }
-// ]
-
 class Result {
 
     allMonthData(given){
