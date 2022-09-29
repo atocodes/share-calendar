@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const { json } = require('body-parser')
 
-const modules = require('./modules')
+const modules = require(__dirname + '/modules')
 console.log(modules)
 
 const app = express()
@@ -133,7 +133,7 @@ app.get('/index/:groupid',(req,res)=>{
     let logedInUserFullName
     Group.findOne({groupId : groupid},(err,group)=>{
         if(!err && group){
-            if(group.memebers.length === group.usersAndDaySettings.length)req.session.result = true
+            if(group.memebers.length > 1 && group.memebers.length === group.usersAndDaySettings.length)req.session.result = true
             req.session.groupid = group._id
             User.findById(req.cookies.loginId,(err,user)=>{
                 if(!err){
