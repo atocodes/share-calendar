@@ -12,6 +12,11 @@
   --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#u_info {
+  color: var(--title-and-selection);
+  font-weight: bold;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -85,6 +90,38 @@ input {
   background-color: var(--white);
   border: unset;
   color: var(--light-red);
+}
+
+#result_div {
+  height: 80vh;
+  width: 80vw;
+  overflow-y: auto;
+}
+#result_div #r_title {
+  color: var(--dark-purple);
+  text-transform: capitalize;
+}
+#result_div #r_month {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  padding: 0 5px;
+  background-image: linear-gradient(var(--gradient1));
+}
+#result_div #r_month #r_monthName {
+  width: 10%;
+  color: var(--white);
+}
+#result_div #r_month #dates {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: var(--current-date-color);
+}
+#result_div #r_month #dates #date {
+  width: 40px;
+  height: 40px;
 }
 
 #description {
@@ -475,4 +512,10 @@ body #main #calander #date_and_calander {
   grid-template-rows: 30% 10% 60%;
   grid-template-columns: 100%;
   background-color: var(--date-and-calander);
+}
+
+@media only screen and (max-width: 767px) {
+  body {
+    background-image: var(--description-site);
+  }
 }/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,20 @@
+<%- include('header_and_footer/header') -%>
+
+<div id="result_div">
+    <h1 id="r_title">@<%=title%> Free Dates Can Set From through the Whole Year.</h1>
+    <% for(let month of result) {%>
+        <div id="r_month">
+            <div id="r_monthName">
+                <p><%=month.month%>:</p>
+            </div>
+            <div id="dates">
+                <% month.dates.forEach(date=>{ %>
+                    <div id="date"><p><%=date%></p></div>
+                <% }) %>
+            </div>
+        </div>
+    <%}%>
+</div>
+
+
+<%- include('header_and_footer/footer') -%>

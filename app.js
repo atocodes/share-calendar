@@ -6,12 +6,13 @@ const mongoose = require('mongoose')
 const encrypt = require('mongoose-encryption')
 const cookieParser = require('cookie-parser')
 
-const validate = require('./validator')
 const session = require('express-session')
 const { json } = require('body-parser')
 
+const modules = require('./modules')
+console.log(modules)
+
 const app = express()
-let login_user
 
 app.use(body_parser.urlencoded({extended:true}))
 app.use(express.static('public'))
@@ -66,7 +67,7 @@ const Group = mongoose.model('groups',groupSchema)
 // })
 
 // Group.findOne({groupId :'@mhcda'},(err,group)=>{
-//     console.log(group)
+//     console.log(group.usersAndDaySettings)
 // })
 
 
@@ -132,7 +133,7 @@ app.get('/index/:groupid',(req,res)=>{
     let logedInUserFullName
     Group.findOne({groupId : groupid},(err,group)=>{
         if(!err && group){
-
+            if(group.memebers.length === group.usersAndDaySettings.length)req.session.result = true
             req.session.groupid = group._id
             User.findById(req.cookies.loginId,(err,user)=>{
                 if(!err){
@@ -141,6 +142,7 @@ app.get('/index/:groupid',(req,res)=>{
                     res.render('index',{
                         data:group,
                         logedInUserFullName : user.fullname.toUpperCase(),
+                        resultReady: req.session.result
                     })
                 }
             })
@@ -148,6 +150,18 @@ app.get('/index/:groupid',(req,res)=>{
             console.log('group found and login:', false)
             res.render('404')
         }
+    })
+})
+
+app.get('/result/:groupid',(req,res)=>{
+    const groupid = req.params.groupid
+    Group.findOne({groupId : groupid},(err,group)=>{
+        // console.log(group)
+        const result = modules.result.freeDays(group.usersAndDaySettings)
+        res.render('result',{
+            result:result,
+            title: group.groupTitle
+        })
     })
 })
 
@@ -207,7 +221,7 @@ app.post('/signup',(req,res)=>{
     const re_password = req.body.re_password
 
     const rememeberMe = req.body.rememeberMe
-    const matchPasword = validate.matchPassword(password,re_password)
+    const matchPasword = modules.matchPassword(password,re_password)
 
     if(matchPasword){
         const newUser =  new User({
@@ -260,7 +274,6 @@ app.post('/busydays',(req,res)=>{
     const set = {
         userid : userid,
         days : data,
-        set : false
     }
 
     Group.findById(groupid,(err,group)=>{
@@ -279,7 +292,6 @@ app.post('/busydays',(req,res)=>{
                 if(users.length === 1){
                     console.log('user already set a date',true)
                 }else{
-                    set.set = true
                     Group.findByIdAndUpdate(groupid,{$push : {usersAndDaySettings : set}},(err,success)=>{
                         if(!err){
                             console.log('other memeber day setting updated to the group data successfully',true)
@@ -288,7 +300,23 @@ app.post('/busydays',(req,res)=>{
                 }
             }
 
-            
+           Group.findById(groupid,(err,group)=>{
+            if(!err){
+                const settedUserIds = []
+                const howManyMemebersAreThere = group.memebers.length
+                const howManySetted = group.usersAndDaySettings.length
+
+                if(group.memebers.length > 1 && group.memebers.length === group.usersAndDaySettings.length){
+                    req.session.result = true
+                    res.redirect(`/result/${group.groupId}`)
+
+                }else{
+
+                    res.redirect(`/index/${group.groupId}`)
+                }
+            }
+           })
+
         }
     })
     // TODO: you better fix the repetation problem when ever the user updates the data!
@@ -381,7 +409,7 @@ app.post('/create',(req,res)=>{
     const passkey = req.body.passkey
     const passkey_re = req.body.passkey_re
 
-    const passwordMatch = validate.matchPassword(passkey,passkey_re)
+    const passwordMatch = modules.matchPassword(passkey,passkey_re)
 
     Group.findOne({groupId : groupid},(err,existingId)=>{
         if(!err){

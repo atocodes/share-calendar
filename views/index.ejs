@@ -19,13 +19,20 @@
                 <h1 id="title"><%= data.groupTitle %></h1>
             </div>
             <div id="description">
-                <p>Overview of selection dates</p>
+                <% if(resultReady){ %>
+                    <span style="font-size: .7rem;color: yellowgreen;">all set lets click the result button to see the result</span>
+                    <a href="/result/<%=data.groupId %>"><Button>See Result</Button></a>
+                <% }else{%>
+                    <p>Overview of selection dates <br><u id="u_info">Its one time set only So make Sure Your Selection Is Right Before You Click Set</u> <br> And As soon as everyone from the group sets their date <u id="u_info">SEE RESULT</u> button will pop up then you can see the free dates you all can pick from. <br> <br> Thankyou you for using this platfrom </p>                    
+                <% } %>
             </div>
+                
+                <form action="/busydays" id="app_form" method="post">
+                    <input type="hidden" name="dates" id="grab" required>
+                    <button type="submit" id="btn">SET</button>
+                </form>
             
-            <form action="/busydays" id="app_form" method="post">
-                <input type="hidden" name="dates" id="grab" required>
-                <button type="submit" id="btn">SET</button>
-            </form>
+            
             
             <div id="crues_status">
                 <% for(let memeber of data.memebers) { %>
