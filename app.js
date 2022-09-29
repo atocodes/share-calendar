@@ -26,9 +26,17 @@ app.use(session({
 
 mongoose.connect(process.env.DB_SERVER_LINK,(err)=>{
     if(!err){
-        console.log('connection to DB => Success')
+        console.log('connection to DB => Success Cloud DB')
     }else{
-        console.log('connection to DB => Fail')
+        // console.log('connection to DB => Fail')
+
+        mongoose.connect('mongodb://127.0.0.1:27017/calander',(err)=>{
+            if(!err){
+                console.log('connection to DB => Success Local DB')
+            }else{
+                console.log(err.message)
+            }
+        })
     }
 })
 
@@ -457,4 +465,4 @@ app.post('/create',(req,res)=>{
 
     // console.log(req.body)
 })
-app.listen(process.env.PORT,()=>console.log('server started at port 3000'))
+app.listen(process.env.PORT || 3000,()=>console.log('server started at port 3000'))
